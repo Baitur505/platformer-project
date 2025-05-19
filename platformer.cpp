@@ -7,6 +7,7 @@
 #include "graphics.h"
 #include "assets.h"
 #include "utilities.h"
+#include "player_controller.h"
 
 void update_game() {
     game_frame++;
@@ -22,21 +23,21 @@ void update_game() {
 
         case GAME_STATE:
             if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
-                move_player_horizontally(PLAYER_MOVEMENT_SPEED);
+                Player::get_instance().move_player_horizontally(PLAYER_MOVEMENT_SPEED);
             }
 
             if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
-                move_player_horizontally(-PLAYER_MOVEMENT_SPEED);
+                Player::get_instance().move_player_horizontally(-PLAYER_MOVEMENT_SPEED);
             }
 
             // Calculating collisions to decide whether the player is allowed to jump
-            is_player_on_ground = is_colliding({player_pos.x, player_pos.y + 0.1f}, WALL);
-            if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W) || IsKeyDown(KEY_SPACE)) && is_player_on_ground) {
-                player_y_velocity = -JUMP_STRENGTH;
+            Player::get_instance().set_player_on_ground(is_colliding({Player::get_instance().get_player_pos().x, Player::get_instance().get_player_pos().y + 0.1f}, WALL));
+            if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W) || IsKeyDown(KEY_SPACE)) && Player::get_instance().is_player_on_ground()) {
+                Player::get_instance().set_player_y_velocity(-JUMP_STRENGTH);
             }
 
-            update_player();
-            update_enemies();
+            Player::get_instance().update_player();
+            EnemiesController::get_instance().update_enemies();
 
             if (IsKeyPressed(KEY_ESCAPE)) {
                 game_state = PAUSED_STATE;
@@ -50,10 +51,10 @@ void update_game() {
             break;
 
         case DEATH_STATE:
-            update_player_gravity();
+            Player::get_instance().update_player_gravity();
 
             if (IsKeyPressed(KEY_ENTER)) {
-                if (player_lives > 0) {
+                if (Player::get_instance().get_player_lives() > 0) {
                     load_level(0);
                     game_state = GAME_STATE;
                 }
@@ -67,7 +68,7 @@ void update_game() {
         case GAME_OVER_STATE:
             if (IsKeyPressed(KEY_ENTER)) {
                 reset_level_index();
-                reset_player_stats();
+                Player::get_instance().reset_player_stats();
                 game_state = GAME_STATE;
                 load_level(0);
             }
@@ -76,7 +77,7 @@ void update_game() {
         case VICTORY_STATE:
             if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_ESCAPE)) {
                 reset_level_index();
-                reset_player_stats();
+                Player::get_instance().reset_player_stats();
                 game_state = MENU_STATE;
                 SetExitKey(KEY_ESCAPE);
             }
@@ -121,9 +122,8 @@ void draw_game() {
 
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT);
-    InitWindow(GetScreenWidth(), GetScreenHeight(), "Platformer");
+    InitWindow(1024, 480, "Platformer");
     SetTargetFPS(60);
-    ToggleFullscreen();
     HideCursor();
 
     load_fonts();

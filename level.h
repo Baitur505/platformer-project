@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include "globals.h"
+#include "player.h"
 
 bool is_inside_level(int row, int column) {
     if (row < 0 || row >= current_level.rows) return false;
@@ -78,8 +79,8 @@ void load_level(int offset) {
     current_level = {rows, columns, current_level_data};
 
     // Instantiate entities
-    spawn_player();
-    spawn_enemies();
+    Player::get_instance().spawn_player();
+    EnemiesController::get_instance().spawn_enemies();
 
     // Calculate positioning and sizes
     derive_graphics_metrics_from_loaded_level();
