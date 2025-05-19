@@ -36,7 +36,6 @@ void EnemiesController::update_enemies() {
         }
     }
 }
-
 // Custom is_colliding function for enemies
 bool EnemiesController::is_colliding_with_enemies(const Vector2 pos) const {
     const Rectangle entity_hitbox = {pos.x, pos.y, 1.0f, 1.0f};
@@ -58,7 +57,6 @@ void EnemiesController::remove_colliding_enemy(const Vector2 pos) {
         // Erase a colliding enemy
         if (CheckCollisionRecs(entity_hitbox, enemy_hitbox)) {
             enemies.erase(it);
-
             // Call the function again to remove any remaining colliding enemies
             // Cannot continue as calling erase on a vector invalidates current iterators
             remove_colliding_enemy(pos);

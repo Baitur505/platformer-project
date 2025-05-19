@@ -33,19 +33,19 @@ public:
     int get_player_lives() const { return lives; }
 
 
-    inline void Player::move_player_horizontally(float delta) {
+    void Player::move_player_horizontally(float delta) {
         PlayerController::move_horizontally(*this, delta);
     }
 
-    inline void Player::update_player_gravity() {
+    void Player::update_player_gravity() {
         PlayerController::update_gravity(*this);
     }
 
-    inline void Player::update_player() {
+    void Player::update_player() {
         PlayerController::update(*this);
     }
 
-    inline void Player::spawn_player() {
+    void Player::spawn_player() {
         y_velocity = 0;
 
         for (size_t row = 0; row < current_level.rows; ++row) {
@@ -61,13 +61,12 @@ public:
         }
     }
 
-    inline void Player::kill_player() {
+    void Player::kill_player() {
         PlaySound(player_death_sound);
         game_state = DEATH_STATE;
         lives--;
         level_scores[level_index] = 0;
     }
-
 
     Vector2 get_player_pos() const { return position; }
     void set_position(Vector2 pos) { position = pos; }
@@ -107,7 +106,5 @@ private:
     static constexpr int MAX_LIVES = 3;
 };
 inline Player::Player() {}
-
-
 
 #endif

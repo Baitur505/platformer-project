@@ -45,7 +45,6 @@ char& get_collider(Vector2 pos, char look_for) {
             }
         }
     }
-
     // If failed, get an approximation
     return get_level_cell(pos.x, pos.y);;
 }
@@ -56,7 +55,6 @@ void reset_level_index() {
 
 void load_level(int offset) {
     level_index += offset;
-
     // Win logic
     if (level_index >= LEVEL_COUNT) {
         game_state = VICTORY_STATE;
@@ -64,7 +62,6 @@ void load_level(int offset) {
         level_index = 0;
         return;
     }
-
     // Level duplication
     size_t rows = LEVELS[level_index].rows;
     size_t columns = LEVELS[level_index].columns;
@@ -75,16 +72,12 @@ void load_level(int offset) {
             current_level_data[row * columns + column] = LEVELS[level_index].data[row * columns + column];
         }
     }
-
     current_level = {rows, columns, current_level_data};
-
     // Instantiate entities
     Player::get_instance().spawn_player();
     EnemiesController::get_instance().spawn_enemies();
-
     // Calculate positioning and sizes
     derive_graphics_metrics_from_loaded_level();
-
     // Reset the timer
     timer = MAX_LEVEL_TIME;
 }
@@ -92,7 +85,6 @@ void load_level(int offset) {
 void unload_level() {
     delete[] current_level_data;
 }
-
 // Getters and setters
 char& get_level_cell(size_t row, size_t column) {
     return current_level.data[row * current_level.columns + column];

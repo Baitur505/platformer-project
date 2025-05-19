@@ -139,13 +139,11 @@ void draw_level() {
 
 void draw_player() {
     horizontal_shift = (screen_size.x - cell_size) / 2;
-
     // Shift the camera to the center of the screen to allow to see what is in front of the player
     Vector2 pos = {
         horizontal_shift,
         Player::get_instance().get_player_pos().y * cell_size
     };
-
     // Pick an appropriate sprite for the player
     if (game_state == GAME_STATE) {
         if (!Player::get_instance().is_player_on_ground()) {

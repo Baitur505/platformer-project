@@ -3,11 +3,11 @@
 #include "enemies_controller.h"
 #include <cmath>
 
-// Handles horizontal movement of the player if collided with the wall
+// Horizontal movement of the player
 void PlayerController::move_horizontally(Player& player, float delta) {
     float next_x = player.get_player_pos().x + delta;
     Vector2 new_pos = player.get_player_pos();
-
+// Collision with the wall
     if (!is_colliding({next_x, new_pos.y}, WALL)) {
         new_pos.x = next_x;
         player.set_position(new_pos);
@@ -21,7 +21,6 @@ void PlayerController::move_horizontally(Player& player, float delta) {
     if (delta != 0)
         player.set_moving(true);
 }
-
 // Gravity logic
 void PlayerController::update_gravity(Player& player) {
     Vector2 pos = player.get_player_pos();
