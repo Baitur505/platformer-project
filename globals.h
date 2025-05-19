@@ -9,7 +9,6 @@
 #include <cstddef>
 #include <cmath>
 
-
 /* Game Elements */
 
 inline const char WALL      = '#',

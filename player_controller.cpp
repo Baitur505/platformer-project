@@ -1,5 +1,5 @@
 #include "player_controller.h"
-#include "Player.h"
+#include "player.h"
 #include "enemies_controller.h"
 #include <cmath>
 
